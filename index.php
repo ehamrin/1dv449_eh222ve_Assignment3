@@ -18,24 +18,25 @@ if(empty($parameters[count($parameters)-1])){
 
 $controllerName = array_shift($parameters);
 
+$view = new \view\HTML_Template();
+
 switch($controllerName){
     case 'api':
-        $controller = new \controller\ApiController($parameters);
+        $controller = new \controller\ApiController();
         break;
     default:
-        $controller = new \controller\Application($parameters);
+        $controller = new \controller\Application($view);
 }
 
 $method = array_shift($parameters);
 
 $method = $method ? $method : 'Index';
 
-$view = new \view\HTML_Template();
+
 
 $output = '';
 
 if(method_exists($controller, $method)){
-    $output = $controller->$method();
+    echo $controller->$method($parameters);
 }
 
-$view->Render($output);

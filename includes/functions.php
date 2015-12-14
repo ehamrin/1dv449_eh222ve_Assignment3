@@ -58,30 +58,6 @@ function error_handler($errno, $errstr, $errfile, $errline) {
         }
         echo '</pre></div>';
     }
-
-    switch ($errno) {
-        case E_USER_ERROR:
-            $exception = new Error_UserError("<b>My ERROR</b> [$errno] $errstr<br /> Fatal error on line $errline in file $errfile, PHP " . PHP_VERSION . " (" . PHP_OS . ")");
-            break;
-
-        case E_USER_WARNING:
-            $exception = new Error_UserWarning("<b>My WARNING</b> [$errno] $errstr\n\n  $errfile <strong>Line:</strong> $errline");
-            break;
-
-        case E_USER_NOTICE:
-            $exception = new Error_UserNotice("<b>My NOTICE</b> [$errno] $errstr\n\n  $errfile <strong>Line:</strong> $errline");
-            break;
-
-        default:
-            $exception = new Error_Unknown("Unknown error type: [$errno] $errstr\n\n  $errfile <strong>Line:</strong> $errline");
-            break;
-    }
-
-    $logger = new \plugin\Logger\model\LoggerModel();
-    if($logger->IsInstalled()){
-        $logger->logException($exception);
-    }
-
     /* Don't execute PHP internal error handler */
     return true;
 }
@@ -92,5 +68,13 @@ function debug($data){
     echo '<div class="info debugging"><pre>';
     var_dump($data);
     echo '</pre></div>';
+}
+
+function get_dir($dir){
+    $files = scandir($dir);
+    array_shift($files);
+    array_shift($files);
+
+    return $files;
 }
 
