@@ -36,4 +36,8 @@ class Message implements \JsonSerializable
     public function jsonSerialize() {
         return get_object_vars($this);
     }
+
+    public function getCreated(){
+        return $this->created;
+    }
 }

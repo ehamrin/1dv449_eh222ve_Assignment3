@@ -12,7 +12,8 @@ $(function(){
         var list = element.find("ul");
 
         function Success(response){
-            events = JSON.parse(response);
+
+            events = response;
 
             events.forEach(function(el){
                 list.prepend('<li><a href="#" class="event-link" data-id="' + el.id + '">' + el.title + '</a></li>');
@@ -46,8 +47,13 @@ $(function(){
     $('#events').click(function(e){
         e.preventDefault();
         var id = $(e.target).data("id");
-        map.setView(markers[id].getLatLng());
-        markers[id].openPopup(popups[id]);
+        if(markers[id] !== undefined){
+            map.setView(markers[id].getLatLng());
+            markers[id].openPopup(popups[id]);
+        }else{
+            console.error('marker with id: ' + id + ' doesnt exist');
+        }
+
 
     });
 
@@ -76,6 +82,11 @@ $(function(){
 
     navigator.geolocation.getCurrentPosition(showPosition);
 */
+
+    $('#event_controller').click(function(e){
+        $('body').toggleClass('active');
+    });
+
     UpdateEvents();
 
 });

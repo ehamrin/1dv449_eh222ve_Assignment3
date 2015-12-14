@@ -17,6 +17,7 @@ class ApplicationView
     public function Render(){
 
         $body = <<<HTML
+        <div id="event_controller"></div>
     <div id="map" class="inline-3-4"></div>
     <div id="events" class="inline-3-4"></div>
 

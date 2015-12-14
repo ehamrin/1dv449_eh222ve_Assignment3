@@ -29,8 +29,19 @@ class ApiController
         if(!isset($content)){
             try{
                 $this->loadFromURL('http://api.sr.se/api/v2/traffic/messages');
+
+                usort($this->messages, function($a, $b){
+                    /* @var $a \model\Message */
+                    /* @var $b \model\Message */
+                    if ($a->getCreated() == $b->getCreated()) {
+                        return 0;
+                    }
+
+                    return (strtotime($a->getCreated()) < strtotime($b->getCreated())) ? -1 : 1;
+                });
+
                 $content = json_encode($this->messages);
-                file_put_contents($cache_dir . 'sr-' . date('Y-m-d H:i:s') . '.json', json_encode($content));
+                file_put_contents($cache_dir . 'sr-' . date('Y-m-d H:i:s') . '.json', $content);
 
             }catch(\Throwable $e){
                 throw $e;

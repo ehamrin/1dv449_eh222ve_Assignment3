@@ -658,17 +658,57 @@ button:hover, .button:hover, input[type=submit]:hover{
 }
 
 #map{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 25%;
+    bottom: 0;
     width: 75%;
-    float: left;
-    height: 100%;
 }
 
 #events{
+    position: absolute;
+    left: 75%;
+    top: 0;
+    bottom: 0;
+    overflow: auto;
     width: 25%;
-    float: left;
+}
+
+#event_controller{
+    display: none;
 }
 
 @media screen and (max-width: 768px) {
 
+    #event_controller{
+        display: block;
+        width: 50px;
+        height: 50px;
+        position: fixed;
+        top: 0;
+        right: 0;
+        background: #000;
+        z-index: 500;
+    }
+
+    .active #event_controller{
+        right: 75%;
+    }
+
+    #events{
+        left: 100%;
+        width: 75%;
+        background: #fff;
+    }
+
+    .active #events{
+        left: 25%;
+    }
+
+    #map{
+        right: 0;
+        width: 100%;
+    }
 }
 
