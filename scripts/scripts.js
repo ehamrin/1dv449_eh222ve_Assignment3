@@ -1,25 +1,84 @@
-$(function(){
+function setCookie(c_name, value, exdays) {
+    var exdate = new Date();
+    exdate.setDate(exdate.getDate() + exdays);
+    var c_value = value + ((exdays == null) ? "" : "; expires=" + exdate.toUTCString());
+    document.cookie = c_name + "=" + c_value;
+}
 
-    var events = [];
-    var latitude = 58.383836;
-    var longitude = 12.322560;
-    var zoom = 7;
+function getCookie(c_name) {
+    var i, x, y, ARRcookies = document.cookie.split(";");
+    for (i = 0; i < ARRcookies.length; i++) {
+        x = ARRcookies[i].substr(0, ARRcookies[i].indexOf("="));
+        y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1);
+        x = x.replace(/^\s+|\s+$/g, "");
+        if (x == c_name) {
+            return y;
+        }
+    }
+}
 
-    function UpdateEvents(){
-        var element = $("#events");
 
-        element.html("<ul></ul>");
-        var list = element.find("ul");
+var App = {
+    events: [],
+    latlng: [58.383836, 12.322560],
+    zoom: 7,
+    map: undefined,
+    markers: [],
+    popups: [],
+    category: [],
+    layers: [],
+
+    Init: function(){
+        App.map = L.map('map').setView(App.latlng, App.zoom);
+
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: ''
+        }).addTo(App.map);
+
+        $('#event-list').click(function(e){
+            e.preventDefault();
+            var id = $(e.target).data("id");
+            if(id !== undefined){
+                App.map.panTo(App.markers[id].getLatLng());
+                App.markers[id].openPopup(App.popups[id]);
+            }else{
+                console.error('marker with id: ' + id + ' doesnt exist');
+            }
+        });
+
+        $('.category-option').click(function(e){
+            e.preventDefault();
+            var element = $(e.target);
+            var id = element.data("category");
+
+            element.toggleClass("show");
+
+            if(id !== undefined && App.category[id] != undefined){
+                App.category[id].forEach(function(el){
+                    if(element.hasClass("show")){
+                        App.map.addLayer(el);
+                    }else{
+                        App.map.removeLayer(el);
+                    }
+                });
+
+            }
+        });
+
+        $('#event_controller').click(function(e){
+            $('body').toggleClass('active');
+        });
+
+        App.UpdateEvents();
+        App.GetLocation();
+    },
+
+    UpdateEvents: function(){
 
         function Success(response){
 
-            events = response;
-
-            events.forEach(function(el){
-                list.prepend('<li><a href="#" class="event-link" data-id="' + el.id + '">' + el.title + '</a></li>');
-            });
-
-            UpdateMap();
+            App.events = response;
+            App.DrawUI();
         }
 
 
@@ -27,66 +86,74 @@ $(function(){
             url: "api/Traffic",
             success: Success
         });
-    }
+    },
 
-    var map = L.map('map').setView([latitude, longitude], zoom).locate();
+    HasLocation: function() {
+        return getCookie("geolocation");
+    },
 
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+    SaveLocation: function SaveLocation(latlng){
+        setCookie("geolocation", JSON.stringify(latlng), 100);
+    },
 
-    var markers = [];
-    var popups = [];
+    GetLocation: function(){
 
-    function getMarkerHTML(el){
+        if(App.HasLocation() == undefined){
+            if("geolocation" in navigator){
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        App.latlng = [position.coords.latitude, position.coords.longitude];
+                        //App.SaveLocation(App.latlng);
+                        App.map.panTo(App.latlng);
+                    }
+                );
+            }
+
+        }else{
+            App.map.panTo(JSON.parse(App.HasLocation()));
+        }
+    },
+
+    DrawUI: function(){
+        var element = $("#event-list");
+
+        var groups = [1,2,3,4,5]
+        App.events.forEach(function(el){
+
+            element.prepend('<li><a href="#" class="event-link" data-id="' + el.id + '">' + el.title + '</a></li>');
+
+            var marker = L.marker([el.latitude, el.longitude],{
+                draggable: false,
+                title: el.title
+            });
+
+            if(App.category[el.category] == undefined){
+                App.category[el.category] = [];
+            }
+
+            App.category[el.category][el.id] = marker;
+            App.map.addLayer(marker);
+            //marker.addTo(App.map);
+
+            App.markers[el.id] = marker;
+
+            var popup = L.popup();
+            popup.setContent(App.getMarkerHTML(el));
+            marker.bindPopup(popup);
+
+            App.popups[el.id] = popup;
+        });
+    },
+
+    getMarkerHTML: function(el){
         return '<h2>' + el.title + '</h2>' +
             '<p class="date">' + el.created + '</p>' +
             '<p class="description">' + el.description + '</p>';
     }
 
-    $('#events').click(function(e){
-        e.preventDefault();
-        var id = $(e.target).data("id");
-        if(markers[id] !== undefined){
-            map.setView(markers[id].getLatLng());
-            markers[id].openPopup(popups[id]);
-        }else{
-            console.error('marker with id: ' + id + ' doesnt exist');
-        }
+};
 
-
-    });
-
-    function UpdateMap(){
-        events.forEach(function(el){
-            var marker = L.marker([el.latitude, el.longitude],{
-                    draggable: false,
-                    title: el.title
-                });
-
-            marker.addTo(map);
-
-            markers[el.id] = marker;
-
-            var popup = L.popup();
-            popup.setContent(getMarkerHTML(el));
-            marker.bindPopup(popup);
-
-            popups[el.id] = popup;
-        });
-    }
-
-  /*  function showPosition(position){
-        map.setView([latitude, longitude]);
-    }
-
-    navigator.geolocation.getCurrentPosition(showPosition);
-*/
-
-    $('#event_controller').click(function(e){
-        $('body').toggleClass('active');
-    });
-
-    UpdateEvents();
+$(function(){
+    App.Init();
 
 });
