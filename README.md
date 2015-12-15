@@ -14,7 +14,7 @@ Således sätts heller inte en session-cookie då det inte finns någon anlednin
 Applikationen är beroende av en extern CDN som tillhandahåller kartverktyget. Skulle denna sluta fungera är det inte mycket till applikation kvar. Därför har jag valt att kolla om det biblioteket är inladdat innan någonting körs, skulle det mot förmodan inte göra det meddelas användaren genom en alert-ruta.
 
 # Hur har du tänkt kring säkerheten i din applikation?
-Inga resurser som inte är offentliga ligger publikt, dessa ligger utanför applikationsroten. Det som är tillgängligt publig är bilder, js, css samt de publika metoder som finns i controller-classerna.
+Inga resurser som inte är offentliga ligger publikt, dessa ligger utanför applikationsroten. Det som är tillgängligt publikt är bilder, js, css samt de publika metoder som finns i controller-classerna.
 
 Jag ser ingen anledning till att skapa en intern api-nyckel, men detta är självklart något man kan göra om man känner ett behov av att säkerställa att det bara är "min" applikation som kan se trafikinformationen.
 
