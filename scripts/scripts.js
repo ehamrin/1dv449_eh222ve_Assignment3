@@ -117,14 +117,25 @@ var App = {
     DrawUI: function(){
         var element = $("#event-list");
 
-        var groups = [1,2,3,4,5]
+        var icons = [1,2,3,4,5];
+        for(i = 1; i <= 5; i++){
+            var icon = L.Icon.Default.extend({
+                options: {
+                    iconUrl: '/images/marker-icon-' + i + '.png'
+                }
+            });
+
+            icons[i] = new icon();
+        }
+
         App.events.forEach(function(el){
 
             element.prepend('<li><a href="#" class="event-link" data-id="' + el.id + '">' + el.title + '</a></li>');
 
             var marker = L.marker([el.latitude, el.longitude],{
                 draggable: false,
-                title: el.title
+                title: el.title,
+                icon: icons[el.priority]
             });
 
             if(App.category[el.category] == undefined){
@@ -148,6 +159,7 @@ var App = {
     getMarkerHTML: function(el){
         return '<h2>' + el.title + '</h2>' +
             '<p class="date">' + el.created + '</p>' +
+            '<p>Prioritet: ' + el.priority + '</p>' +
             '<p class="description">' + el.description + '</p>';
     }
 
