@@ -28,7 +28,7 @@ class ApiController
 
         if(!isset($content)){
             try{
-                $this->loadFromURL('http://api.sr.se/api/v2/traffic/messages');
+                $this->loadFromURL('http://api.sr.se/api/v2/traffic/messages?format=json&pagination=false&sort=createddate&indent=true');
 
                 usort($this->messages, function($a, $b){
                     /* @var $a \model\Message */
@@ -55,17 +55,10 @@ class ApiController
 
     private function loadFromURL($url){
         $content = file_get_contents($url);
+        $json = json_decode($content);
 
-        $xml = simplexml_load_string($content) or die("Error: Cannot create object");
-
-        foreach($xml->messages->message as $message){
-            $this->messages[] = (new \model\Message())->loadFromXML($message);
-        }
-
-        $next = (string) $xml->pagination->nextpage;
-
-        if(!empty($next)){
-            $this->loadFromURL($next);
+        foreach($json->messages as $message){
+            $this->messages[] = (new \model\Message())->loadFromJSON($message);
         }
     }
 
