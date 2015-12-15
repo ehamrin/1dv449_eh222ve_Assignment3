@@ -657,7 +657,7 @@ button:hover, .button:hover, input[type=submit]:hover{
 }
 
 #map{
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     right: 25%;
@@ -666,11 +666,11 @@ button:hover, .button:hover, input[type=submit]:hover{
 }
 
 #events{
-    position: absolute;
+    position: fixed;
     left: 75%;
     top: 0;
     bottom: 0;
-    overflow: auto;
+    overflow: hidden;
     width: 25%;
 }
 
@@ -690,7 +690,7 @@ button:hover, .button:hover, input[type=submit]:hover{
 
 .category-controls a{
     display: block;
-    padding: 15px 45px 15px;
+    padding: 13px 45px 13px;
     color: #fff;
     background-color: #515151;
     border: 2px solid #1b1b1b;
@@ -715,12 +715,12 @@ button:hover, .button:hover, input[type=submit]:hover{
 
 #event-list{
     position: absolute;
-    height: calc(100% - 208px);
-    max-height: calc(100% - 208px);
-    margin: 208px 0 0;
+    top: 216px;
+    bottom: 0;
     padding: 0;
-    overflow: auto;
+    overflow-y: scroll;
     width: 100%;
+    margin: 0;
 }
 
 #event-list a{
@@ -809,10 +809,10 @@ button:hover, .button:hover, input[type=submit]:hover{
     }
 
     #event-list{
-        margin-top: 235px;
+        top: 208px;
         max-width: 100%;
         overflow-x: hidden;
-
+        margin: 0;
     }
 
     .active #events{
