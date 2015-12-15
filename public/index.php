@@ -1,6 +1,6 @@
 <?php
 
-define('APP_ROOT', getcwd() . DIRECTORY_SEPARATOR);
+define('APP_ROOT', dirname(getcwd()) . DIRECTORY_SEPARATOR);
 
 define('DEBUG', TRUE);
 
