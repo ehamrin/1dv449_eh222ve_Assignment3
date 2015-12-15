@@ -39,10 +39,9 @@ var App = {
             e.preventDefault();
             var id = $(e.target).data("id");
             if(id !== undefined){
+                $('body').removeClass('active');
                 App.map.panTo(App.markers[id].getLatLng());
                 App.markers[id].openPopup(App.popups[id]);
-            }else{
-                console.error('marker with id: ' + id + ' doesnt exist');
             }
         });
 
@@ -54,6 +53,8 @@ var App = {
             element.toggleClass("show");
 
             if(id !== undefined && App.category[id] != undefined){
+
+                $("#event-list li[data-category='" + id + "']").toggle();
                 App.category[id].forEach(function(el){
                     if(element.hasClass("show")){
                         App.map.addLayer(el);
@@ -130,7 +131,7 @@ var App = {
 
         App.events.forEach(function(el){
 
-            element.prepend('<li><a href="#" class="event-link" data-id="' + el.id + '">' + el.title + '</a></li>');
+            element.prepend('<li data-category="' + el.category + '"><a href="#" class="event-link priority-' + el.priority + '" data-id="' + el.id + '">' + el.title + '</a></li>');
 
             var marker = L.marker([el.latitude, el.longitude],{
                 draggable: false,
@@ -171,5 +172,10 @@ var App = {
 };
 
 $(function(){
-    App.Init();
+    if(L != undefined){
+        App.Init();
+    }else{
+        alert('could not load map');
+    }
+
 });
