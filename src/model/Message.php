@@ -33,6 +33,34 @@ class Message implements \JsonSerializable
         return $this;
     }
 
+    public function loadFromJSON($message){
+        $this->id = $message->id;
+        $this->priority = $message->priority;
+        $this->created = $message->createddate;
+        $this->title = $message->title;
+        $this->location = $message->exactlocation;
+        $this->description = $message->description;
+        $this->latitude = $message->latitude;
+        $this->longitude = $message->longitude;
+        switch($message->category){
+            case 0:
+                $this->category = "Vägtrafik";
+                break;
+            case 1:
+                $this->category = "Kollektivtrafik";
+                break;
+            case 2:
+                $this->category = "Planerad störning";
+                break;
+            case 3:
+                $this->category = "Övrigt";
+                break;
+        }
+
+        $this->subcategory = $message->subcategory;
+        return $this;
+    }
+
     public function jsonSerialize() {
         return get_object_vars($this);
     }
