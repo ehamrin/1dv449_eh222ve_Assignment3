@@ -16,7 +16,7 @@ class HTML_Template
     <meta name="author" content="Erik Hamrin">
     <meta name="viewport" content="width=device-width, initial-scale=1,  maximum-scale=1.0, user-scalable=false">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/public/css/styles.css?v=1.1">
+    <link rel="stylesheet" type="text/css" href="/css/styles.min.css" />
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
 
 </head>
@@ -24,9 +24,9 @@ class HTML_Template
 <main>
     {$body}
 </main>
-<script src="/public/scripts/jquery.js"></script>
-<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
-<script type="text/javascript" src="/public/scripts/scripts.js"></script>
+<script src="/scripts/jquery.js"></script>
+<script src="//cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+<script src="/scripts/scripts.min.js"></script>
 </body>
 </html>
 HTML;

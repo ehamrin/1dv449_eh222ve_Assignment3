@@ -131,7 +131,7 @@ var App = {
 
         App.events.forEach(function(el){
 
-            element.prepend('<li data-category="' + el.category + '"><a href="#" class="event-link priority-' + el.priority + '" data-id="' + el.id + '">' + el.title + '</a></li>');
+            element.prepend('<li data-category="' + el.category + '"><a href="#" class="event-link priority-' + el.priority + '" data-id="' + el.id + '">' + el.title + ' <span class="subcategory">(' + el.category + '/' + el.subcategory + ')</span></a></li>');
 
             var marker = L.marker([el.latitude, el.longitude],{
                 draggable: false,
