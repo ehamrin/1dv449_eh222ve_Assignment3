@@ -8,7 +8,6 @@ ini_set('display_errors', DEBUG);
 error_reporting(E_ALL);
 
 require_once APP_ROOT . 'includes' . DIRECTORY_SEPARATOR . 'functions.php';
-session_start();
 
 $parameters = isset($_GET['url']) ? $_GET['url'] : '';
 $parameters = explode('/', $parameters);

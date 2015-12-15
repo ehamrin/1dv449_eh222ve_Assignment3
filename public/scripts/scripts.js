@@ -32,7 +32,7 @@ var App = {
         App.map = L.map('map').setView(App.latlng, App.zoom);
 
         L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            attribution: ''
+            attribution: 'Trafikinformation hämtad från sverigesradio.se'
         }).addTo(App.map);
 
         $('#event-list').click(function(e){
