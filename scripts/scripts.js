@@ -157,9 +157,14 @@ var App = {
     },
 
     getMarkerHTML: function(el){
-        return '<h2>' + el.title + '</h2>' +
-            '<p class="date">' + el.created + '</p>' +
-            '<p>Prioritet: ' + el.priority + '</p>' +
+
+        function pad(n){return n<10 ? '0'+n : n}
+
+        var date = new Date(el.created);
+
+        return '<p class="date">' + date.getUTCFullYear() + '-' + pad(date.getUTCMonth()) + '-' + pad(date.getUTCDate()) + ' ' + pad(date.getHours()) + ':' + pad(date.getMinutes()) + '</p>' +
+            '<h2>' + el.subcategory + '</h2>' +
+            '<h3>' + el.title + '</h3>' +
             '<p class="description">' + el.description + '</p>';
     }
 
@@ -167,5 +172,4 @@ var App = {
 
 $(function(){
     App.Init();
-
 });

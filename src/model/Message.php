@@ -36,7 +36,10 @@ class Message implements \JsonSerializable
     public function loadFromJSON($message){
         $this->id = $message->id;
         $this->priority = $message->priority;
-        $this->created = $message->createddate;
+
+        $date = substr($message->createddate, 6);
+        $date = intval($date);
+        $this->created = $date;
         $this->title = $message->title;
         $this->location = $message->exactlocation;
         $this->description = $message->description;

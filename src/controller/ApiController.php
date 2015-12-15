@@ -37,7 +37,7 @@ class ApiController
                         return 0;
                     }
 
-                    return (strtotime($a->getCreated()) < strtotime($b->getCreated())) ? -1 : 1;
+                    return ($a->getCreated() < $b->getCreated()) ? -1 : 1;
                 });
 
                 $content = json_encode($this->messages);

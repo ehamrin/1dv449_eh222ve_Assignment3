@@ -679,6 +679,20 @@ button:hover, .button:hover, input[type=submit]:hover{
     display: none;
 }
 
+.leaflet-popup-content .date{
+    float: right;
+    margin-top: 2px;
+    color: #c0c0c0;
+}
+
+.leaflet-popup-content h2{
+    margin-bottom: 5px;
+}
+
+.leaflet-popup-content h3{
+    margin-top: 0;
+}
+
 @media screen and (max-width: 768px) {
 
     #event_controller{
